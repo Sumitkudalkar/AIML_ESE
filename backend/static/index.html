@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FaceID Attendance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<header>
+  <div class="header-left">
+    <span class="logo-dot"></span>
+    <h1>FACEID <span class="accent">ATTENDANCE</span></h1>
+  </div>
+  <div class="header-right">
+    <div class="live-indicator">
+      <span class="pulse-dot"></span>
+      <span id="live-label">LIVE</span>
+    </div>
+    <div id="live-clock">00:00:00</div>
+    <div id="live-date">—</div>
+  </div>
+</header>
+
+<div class="stats-row">
+  <div class="stat-card present-card">
+    <div class="stat-label">PRESENT</div>
+    <div class="stat-value" id="stat-present">—</div>
+    <div class="stat-bar"><div class="stat-fill present-fill" id="present-fill"></div></div>
+  </div>
+  <div class="stat-card absent-card">
+    <div class="stat-label">ABSENT</div>
+    <div class="stat-value" id="stat-absent">—</div>
+    <div class="stat-bar"><div class="stat-fill absent-fill" id="absent-fill"></div></div>
+  </div>
+  <div class="stat-card total-card">
+    <div class="stat-label">ENROLLED</div>
+    <div class="stat-value" id="stat-total">—</div>
+    <div class="stat-sub" id="stat-rate">—% RATE</div>
+  </div>
+</div>
+
+<div class="main-grid">
+
+  <!-- Attendance Table -->
+  <section class="panel table-panel">
+    <div class="panel-header">
+      <span class="panel-title">ATTENDANCE LOG</span>
+      <div class="controls">
+        <input type="date" id="date-picker">
+        <button onclick="loadData()" class="btn-ghost">FILTER</button>
+        <button onclick="downloadCSV()" class="btn-ghost">EXPORT CSV</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>NAME</th>
+            <th>TIME</th>
+            <th>DATE</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="5" class="empty-row">Waiting for data…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Registration Panel -->
+  <section class="panel reg-panel">
+    <div class="panel-header">
+      <span class="panel-title">REGISTER FACE</span>
+    </div>
+    <div class="reg-body">
+      <input type="text" id="student-username" placeholder="Enter name / roll no." class="text-input">
+      <div class="video-wrap">
+        <video id="webcam-video" autoplay playsinline></video>
+        <div class="video-overlay" id="video-overlay">
+          <span>CAMERA OFF</span>
+        </div>
+      </div>
+      <div class="reg-btns">
+        <button id="start-camera-btn" onclick="startCamera()" class="btn-primary">OPEN CAMERA</button>
+        <button id="register-btn" onclick="captureAndRegister()" disabled class="btn-success">CAPTURE & REGISTER</button>
+      </div>
+      <div id="status-text" class="status-msg"></div>
+      <div class="progress-wrap" id="progress-wrap" style="display:none">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

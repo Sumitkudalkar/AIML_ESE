@@ -7,7 +7,7 @@ from insightface.app import FaceAnalysis
 app = FaceAnalysis()
 app.prepare(ctx_id=0)
 
-dataset_path = r"C:\Users\sumit\OneDrive\Desktop\AIML_ESE\Dataset"
+dataset_path = r"D:\Attendance AI\AIML_ESE-main\AIML_ESE-main\recognition\Dataset"
 database = {}
 for person_name in os.listdir(dataset_path):
     person_path = os.path.join(dataset_path, person_name)
