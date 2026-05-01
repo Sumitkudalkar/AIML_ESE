@@ -3,6 +3,8 @@ import cv2 as cv
 from insightface.app import FaceAnalysis
 from numpy.linalg import norm
 import numpy as np
+import json
+from datetime import datetime
 
 with open("face_db.pkl", "rb") as f:
     database = pickle.load(f)    
@@ -35,6 +37,14 @@ cap = cv.VideoCapture(0)
 
 marked = set()  # to avoid duplicate attendance
 
+# Load existing attendance records or create new list
+attendance_file = "attendance.json"
+try:
+    with open(attendance_file, "r") as f:
+        attendance_records = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    attendance_records = []
+
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -56,6 +66,19 @@ while True:
         if name != "Unknown" and name not in marked:
             print(f"{name} marked present")
             marked.add(name)
+            
+            # Generate JSON record with timestamp
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            record = {
+                "name": name,
+                "timestamp": timestamp
+            }
+            attendance_records.append(record)
+            
+            # Write to JSON file
+            with open(attendance_file, "w") as f:
+                json.dump(attendance_records, f, indent=4)
+            print(f"Record saved: {record}")
 
     cv.imshow("Face Recognition", frame)
     
