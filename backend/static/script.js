@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("date-picker").value = localDate;
   loadData();
   updateClock();
-  setInterval(loadData, 15000);
+  setInterval(loadData, 2000);
   setInterval(updateClock, 1000);
 });
 
