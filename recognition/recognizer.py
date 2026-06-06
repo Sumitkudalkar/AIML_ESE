@@ -45,12 +45,10 @@ def mark_attendance(name: str):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     record = {"name": name, "timestamp": timestamp}
 
-    # 1️⃣  Write to JSON
     attendance_records.append(record)
     with open(ATTENDANCE_JSON, "w") as f:
         json.dump(attendance_records, f, indent=4)
 
-    # 2️⃣  Write to SQLite via FastAPI
     try:
         resp = requests.post(
             f"{FASTAPI_URL}/mark-attendance",
@@ -68,10 +66,10 @@ def mark_attendance(name: str):
 
 # ── InsightFace setup ────────────────────────────────────────
 app = FaceAnalysis()
-app.prepare(ctx_id=0)          # ctx_id=-1 for CPU only
+app.prepare(ctx_id=0)
 
 cap = cv.VideoCapture(0)
-marked = set()                 # session-level dedup (one mark per run)
+marked = set()
 
 print("[INFO] Face recognition started. Press 'q' to quit.")
 
@@ -92,7 +90,6 @@ while True:
         cv.putText(frame, name, (x1, y1 - 10),
                    cv.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
 
-        # Mark attendance once per session
         if name != "Unknown" and name not in marked:
             marked.add(name)
             mark_attendance(name)
